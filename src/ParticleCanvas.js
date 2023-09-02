@@ -34,7 +34,7 @@ const ParticleCanvas = () => {
   const [imageSrc, setImageSrc] = useState('');
   const [display, setDisplay] = useState('none');
   const [altText, setAltText] = useState('');
-
+  const [explosionCount, setExplosionCount] = useState(0);
   const openModalWithContent = (content) => {
     setImageSrc(content);
     setDisplay("block");
@@ -129,7 +129,9 @@ const ParticleCanvas = () => {
         part.y += part.speed;
       });
     };
-
+    const updateExplosionCount = () => {
+        setExplosionCount((count) => count + 1);
+      };
     const drawParticles = () => {
       context.fillStyle = '#3b2920';
       context.fillRect(0, 0, canvas.width, canvas.height);
@@ -161,6 +163,7 @@ const ParticleCanvas = () => {
           );
           if (distance < 50) {
             part.isExploding = true;
+            updateExplosionCount();
           }
         });
       }
@@ -260,11 +263,12 @@ const ParticleCanvas = () => {
           </div>
         </>
       )}
+       <div style={{backgroundColor:"#3b2920", fontFamily: "Comic Sans MS", color:"#e8dfdb"}}>Счётчик взрывов: {explosionCount} </div>
       <canvas
         ref={canvasRef}
         style={{
           width: '100%',
-          height: '100vh',
+          height: '99vh',
           pointerEvents: showModal ? 'none' : 'auto',
         }}
       />
